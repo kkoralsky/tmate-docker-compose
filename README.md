@@ -1,6 +1,12 @@
 setup
 =====
 
+1. pull images
+
+    ```
+    docker-compose pull
+    ```
+
 1. generate keys
 
     ```
@@ -40,5 +46,3 @@ setup
     you can get fingerprints like:
 
         $ ssh-keygen -l -E sha256 -f  keys/ssh_host_ed25519_key.pub
-
-
