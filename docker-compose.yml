@@ -1,0 +1,54 @@
+version: '2.1'
+services:
+  master:
+    image: tmate/tmate-master:latest
+    environment:
+      HOSTNAME: master-0
+      MASTER_BASE_URL: &master_base_url 'http://${EXTERNAL_FQDN}:4000/'
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      INTERNAL_API_AUTH_TOKEN: &internal_api_auth_token ${INTERNAL_API_AUTH_TOKEN}
+      PG_URI: pg://tmate:${POSTGRES_PASSWORD}@postgres:5432/tmate
+      # PG_POOLSIZE:
+      # PG_SSL_CA_CERT:
+      ERL_NODE_NAME: erl_node_name
+      ERL_COOKIE: erl_cookie
+      MAILGUN_API_KEY: mailgun_api_key
+    ports: ["0.0.0.0:4000:4000"]
+  ssh:
+    image: tmate/tmate-ssh-server:latest
+    environment:
+      SSH_KEYS_PATH: /keys
+      HAS_WEBSOCKET: 1
+      SSH_HOSTNAME: ${EXTERNAL_FQDN}
+      SSH_PORT_LISTEN: 22
+      SSH_PORT_ADVERTISE: 22
+    command:
+      # - -a/keys/authorized_keys
+      - -wwebsocket
+      - -p 22
+    volumes: ["$PWD/keys:/keys"]
+    restart: unless-stopped
+    ports: ["0.0.0.0:22:22"]
+    cap_add: [SYS_ADMIN]
+  websocket:
+    image: tmate/tmate-websocket:latest
+    environment:
+      WEBSOCKET_BASE_URL: 'ws://${EXTERNAL_FQDN}:4001/'
+      MASTER_BASE_URL: http://master:4000/
+      USER_FACING_BASE_URL: *master_base_url
+      DAEMON_HMAC_KEY: ${DAEMON_HMAC_KEY} 
+      INTERNAL_API_AUTH_TOKEN: *internal_api_auth_token
+      ERL_NODE_NAME: erl_node_name
+      ERL_COOKIE: erl_cookie
+    expose: [4002]
+    ports: ["0.0.0.0:4001:4001"]
+  postgres:
+    image: postgres:10
+    environment:
+      POSTGRES_USER: tmate
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: tmate
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+
+volumes:
+  postgres_data: {}
