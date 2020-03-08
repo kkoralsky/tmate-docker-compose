@@ -13,6 +13,14 @@ setup
     $ mkdir -p keys && ./create_keys.sh
     ```
 
+1. edit example configuration
+
+    ```
+    cp ./tmate.conf{.example,}
+    ```
+
+    preserve characterset and lengths of the secret key (except INTERNAL_API_AUTH_TOKEN)
+
 1. run migrations
 
     ```
@@ -46,3 +54,5 @@ setup
     you can get fingerprints like:
 
         $ ssh-keygen -l -E sha256 -f  keys/ssh_host_ed25519_key.pub
+
+    symlink `~/.tmate.conf` to `~/.tmux.conf`
