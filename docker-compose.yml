@@ -26,7 +26,7 @@ services:
       # - -a/keys/authorized_keys
       - -wwebsocket
       - -p 22
-    volumes: ["$PWD/keys:/keys"]
+    volumes: ["$PWD/keys:/keys", "sessions:/tmp/tmate/sessions"]
     restart: unless-stopped
     ports: ["0.0.0.0:22:22"]
     cap_add: [SYS_ADMIN]
@@ -41,6 +41,7 @@ services:
       ERL_NODE_NAME: erl_node_name
       ERL_COOKIE: erl_cookie
     expose: [4002]
+    volumes: ["sessions:/tmp/tmate/sessions"]
     ports: ["0.0.0.0:4001:4001"]
   postgres:
     image: postgres:10
@@ -52,3 +53,4 @@ services:
 
 volumes:
   postgres_data: {}
+  sessions: {}
