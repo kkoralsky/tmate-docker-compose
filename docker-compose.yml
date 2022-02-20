@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3'
 services:
   master:
     image: tmate/tmate-master:latest
@@ -10,7 +10,7 @@ services:
       PG_URI: pg://tmate:${POSTGRES_PASSWORD}@postgres:5432/tmate
       ERL_NODE_NAME: erl_node_name
       ERL_COOKIE: erl_cookie
-      MAILGUN_API_KEY: mailgun_api_key
+    env_file: [email.env]
     ports: ["0.0.0.0:4000:4000"]
     restart: unless-stopped
   ssh:
