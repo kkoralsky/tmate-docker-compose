@@ -8,8 +8,6 @@ services:
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       INTERNAL_API_AUTH_TOKEN: &internal_api_auth_token ${INTERNAL_API_AUTH_TOKEN}
       PG_URI: pg://tmate:${POSTGRES_PASSWORD}@postgres:5432/tmate
-      # PG_POOLSIZE:
-      # PG_SSL_CA_CERT:
       ERL_NODE_NAME: erl_node_name
       ERL_COOKIE: erl_cookie
       MAILGUN_API_KEY: mailgun_api_key
