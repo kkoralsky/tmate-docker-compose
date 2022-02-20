@@ -12,6 +12,7 @@ services:
       ERL_COOKIE: erl_cookie
       MAILGUN_API_KEY: mailgun_api_key
     ports: ["0.0.0.0:4000:4000"]
+    restart: unless-stopped
   ssh:
     image: tmate/tmate-ssh-server:latest
     environment:
@@ -41,6 +42,7 @@ services:
     expose: [4002]
     volumes: ["sessions:/tmp/tmate/sessions"]
     ports: ["0.0.0.0:4001:4001"]
+    restart: unless-stopped
   postgres:
     image: postgres:10
     environment:
@@ -48,6 +50,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: tmate
     volumes: ["postgres_data:/var/lib/postgresql/data"]
+    restart: unless-stopped
 
 volumes:
   postgres_data: {}
