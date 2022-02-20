@@ -19,15 +19,12 @@ services:
       SSH_KEYS_PATH: /keys
       HAS_WEBSOCKET: 1
       SSH_HOSTNAME: ${EXTERNAL_FQDN}
-      SSH_PORT_LISTEN: 22
-      SSH_PORT_ADVERTISE: 22
-    command:
-      # - -a/keys/authorized_keys
-      - -wwebsocket
-      - -p 22
+      SSH_PORT_LISTEN: ${SSH_PORT}
+      SSH_PORT_ADVERTISE: ${SSH_PORT}
+    command: [-wwebsocket]
     volumes: ["$PWD/keys:/keys", "sessions:/tmp/tmate/sessions"]
     restart: unless-stopped
-    ports: ["0.0.0.0:22:22"]
+    ports: ["0.0.0.0:${SSH_PORT}:${SSH_PORT}"]
     cap_add: [SYS_ADMIN]
   websocket:
     image: tmate/tmate-websocket:latest
