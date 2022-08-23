@@ -46,3 +46,8 @@
     docker-compose up -d
     docker-compose logs -f
     ```
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
